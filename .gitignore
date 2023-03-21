@@ -1,0 +1,7 @@
+*.o
+*.a
+*.x
+*.elf*
+*.sys
+*.bz2
+XSP/download/
