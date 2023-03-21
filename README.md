@@ -1,5 +1,20 @@
-# XSP
+# XSP for elf2x68k
+XSPをモトローラ形式のアセンブリからMIT形式（GASフォーマット）に書き換え、[elf2x68k](https://github.com/yunkya2/elf2x68k)でビルドできるようにしたバージョンです。
 
+TODO
+- [x] XSP本体
+- [ ] PCM8Afnc
+- [ ] PCG90
+- [X] XSP_010
+- [ ] XSP_020
+- [ ] XSP_020
+- [ ] XSP_030
+- [ ] XSP_040
+- [ ] XSP_050
+- [ ] XSP_060
+
+
+以下はオリジナルの解説です。
 
 # 解説
 
