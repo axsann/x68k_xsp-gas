@@ -44,22 +44,22 @@ typedef	struct	{
 
 
 
-void	xsp_on(void);
-void	xsp_off(void);
-void	xsp_pcgdat_set(const void *pcg_dat, char *pcg_alt, short alt_size);
-void	xsp_pcgmask_on(short start_no, short end_no);
-void	xsp_pcgmask_off(short start_no, short end_no);
-void	xsp_mode(short mode_no);
-void	xsp_objdat_set(const void *sp_ref);
-short	xsp_vsync(short n);			/* obsoleted */
-short	xsp_vsync2(short max_delay);
+void	_xsp_on(void);
+void	_xsp_off(void);
+void	_xsp_pcgdat_set(const void *pcg_dat, char *pcg_alt, short alt_size);
+void	_xsp_pcgmask_on(short start_no, short end_no);
+void	_xsp_pcgmask_off(short start_no, short end_no);
+void	_xsp_mode(short mode_no);
+void	_xsp_objdat_set(const void *sp_ref);
+short	_xsp_vsync(short n);			/* obsoleted */
+short	_xsp_vsync2(short max_delay);
 #if !defined(XSP_USE_INLINE_ASM)
-short	xsp_set(short x, short y, short pt, short info);
-void	xobj_set(short x, short y, short pt, short info);
-short	xsp_set_st(const void *arg);
-void	xobj_set_st(const void *arg);
+short	_xsp_set(short x, short y, short pt, short info);
+void	_xobj_set(short x, short y, short pt, short info);
+short	_xsp_set_st(const void *arg);
+void	_xobj_set_st(const void *arg);
 #else
-	static XSP_FORCE_INLINE short xsp_set(short x, short y, short pt, short info) {
+	static XSP_FORCE_INLINE short _xsp_set(short x, short y, short pt, short info) {
 		register short reg_d0 asm ("d0") = x;
 		register short reg_d1 asm ("d1") = y;
 		register short reg_d2 asm ("d2") = pt;
@@ -74,7 +74,7 @@ void	xobj_set_st(const void *arg);
 		);
 		return reg_d0;
 	}
-	static XSP_FORCE_INLINE short xsp_set_st(const void *arg) {
+	static XSP_FORCE_INLINE short _xsp_set_st(const void *arg) {
 		register short       reg_d0 asm ("d0");
 		register const void *reg_a0 asm ("a0") = arg;
 		asm volatile (
@@ -87,7 +87,7 @@ void	xobj_set_st(const void *arg);
 		);
 		return reg_d0;
 	}
-	static XSP_FORCE_INLINE void xobj_set(short x, short y, short pt, short info) {
+	static XSP_FORCE_INLINE void _xobj_set(short x, short y, short pt, short info) {
 		register short reg_d0 asm ("d0") = x;
 		register short reg_d1 asm ("d1") = y;
 		register short reg_d2 asm ("d2") = pt;
@@ -103,7 +103,7 @@ void	xobj_set_st(const void *arg);
 						"a0","a1","a2"
 		);
 	}
-	static XSP_FORCE_INLINE void xobj_set_st(const void *arg) {
+	static XSP_FORCE_INLINE void _xobj_set_st(const void *arg) {
 		register short       reg_d0 asm ("d0");
 		register const void *reg_a0 asm ("a0") = arg;
 		asm volatile (
@@ -117,24 +117,24 @@ void	xobj_set_st(const void *arg);
 		);
 	}
 #endif
-short	xsp_out(void);
-short	xsp_out2(void *vsyncint_arg);
-void	xsp_vertical(short flag);
+short	_xsp_out(void);
+short	_xsp_out2(void *vsyncint_arg);
+void	_xsp_vertical(short flag);
 
-void	xsp_vsyncint_on(void *proc);
-void	xsp_vsyncint_off(void);
-void	xsp_hsyncint_on(const void *time_chart);
-void	xsp_hsyncint_off(void);
+void	_xsp_vsyncint_on(void *proc);
+void	_xsp_vsyncint_off(void);
+void	_xsp_hsyncint_on(const void *time_chart);
+void	_xsp_hsyncint_off(void);
 
-void	xsp_auto_adjust_divy(short flag);
-void	xsp_min_divh_set(short h);
-short	xsp_divy_get(short i);
-void	xsp_raster_ofs_for31khz_set(short ofs);
-short	xsp_raster_ofs_for31khz_get(void);
-void	xsp_raster_ofs_for15khz_set(short ofs);
-short	xsp_raster_ofs_for15khz_get(void);
+void	_xsp_auto_adjust_divy(short flag);
+void	_xsp_min_divh_set(short h);
+short	_xsp_divy_get(short i);
+void	_xsp_raster_ofs_for31khz_set(short ofs);
+short	_xsp_raster_ofs_for31khz_get(void);
+void	_xsp_raster_ofs_for15khz_set(short ofs);
+short	_xsp_raster_ofs_for15khz_get(void);
 
-void	xsp_vsync_interval_set(short interval);
-short	xsp_vsync_interval_get(void);
+void	_xsp_vsync_interval_set(short interval);
+short	_xsp_vsync_interval_get(void);
 
 #endif

@@ -250,7 +250,7 @@ VSYNC_INT:
 
 
 #=======[ Š„‚èž‚Ýƒ}ƒXƒN‚É¬×H ]	|# ‹AüŠúŠÔŠ„ž‚Ý’†‚Éƒ‰ƒXƒ^Š„ž‚Ý‚ª‚©‚©‚é‚æ‚¤‚É¬×H
-	ori.w	#0x0700,sr
+	ori.w	#0x0700,%sr
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -365,7 +365,7 @@ _RAS_INT_endmark:	move.l	#dummy_proc,hsyncint_sub	|#[28] ŽŸ‰ñƒTƒuƒ‹[ƒ`ƒ“ƒAƒhƒŒƒ
 
 
 RAS_INT_init_END:
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5iŠ„‚èž‚Ý‹–‰Âj
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5iŠ„‚èž‚Ý‹–‰Âj
 
 
 #=======[ ƒ†[ƒU[Žw’è‹AüŠúŠÔŠ„‚èž‚ÝƒTƒuƒ‹[ƒ`ƒ“‚ÌŽÀs ]
@@ -373,7 +373,7 @@ RAS_INT_init_END:
 	move.l	vsyncint_arg(%a0),-(%sp)	|# ˆø” push
 	movea.l	vsyncint_sub(%pc),%a0
 	jsr	(%a0)
-	addq.w	#4,sp			|# ƒXƒ^ƒbƒN•â³
+	addq.w	#4,%sp			|# ƒXƒ^ƒbƒN•â³
 
 
 #=======[ ƒXƒvƒ‰ƒCƒg•\Ž¦ ]
@@ -442,7 +442,7 @@ vsync_PCG_DEF_END:
 
 #=======[ RTE ]
 VSYNC_RTE:
-	ori.w	#0x0700,sr		|# Š„‚èž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7iŠ„‚èž‚Ý‹ÖŽ~j
+	ori.w	#0x0700,%sr		|# Š„‚èž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7iŠ„‚èž‚Ý‹ÖŽ~j
 	bsr	WAIT			|# 68030 ‘Îô
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
@@ -572,7 +572,7 @@ dummy_proc:
 
 
 DISP_buff_C:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -581,13 +581,13 @@ DISP_buff_C:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*2(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_C ƒAƒhƒŒƒX
 	movea.l	#0xEB0000,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXi‹ô””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ
@@ -595,7 +595,7 @@ DISP_buff_C:
 
 
 DISP_buff_D:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -604,13 +604,13 @@ DISP_buff_D:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*3(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_D ƒAƒhƒŒƒX
 	movea.l	#0xEB0008,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXiŠï””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ
@@ -618,7 +618,7 @@ DISP_buff_D:
 
 
 DISP_buff_E:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -627,13 +627,13 @@ DISP_buff_E:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*4(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_E ƒAƒhƒŒƒX
 	movea.l	#0xEB0000,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXi‹ô””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ
@@ -641,7 +641,7 @@ DISP_buff_E:
 
 
 DISP_buff_F:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -650,13 +650,13 @@ DISP_buff_F:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*5(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_F ƒAƒhƒŒƒX
 	movea.l	#0xEB0008,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXiŠï””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ
@@ -664,7 +664,7 @@ DISP_buff_F:
 
 
 DISP_buff_G:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -673,13 +673,13 @@ DISP_buff_G:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*6(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_G ƒAƒhƒŒƒX
 	movea.l	#0xEB0000,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXi‹ô””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ
@@ -687,7 +687,7 @@ DISP_buff_G:
 
 
 DISP_buff_H:
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	IMRA(%a0),-(%a7)		|# IMRA •Û‘¶
@@ -696,13 +696,13 @@ DISP_buff_H:
 	andi.b	#0b11110111,IMRB(%a0)	|# ƒ}ƒXƒN‚É¬×H
 
 	movea.l	disp_struct(%pc),%a0	|# %a0.l = •\Ž¦—pƒoƒbƒtƒ@ŠÇ—\‘¢‘ÌƒAƒhƒŒƒX
-	andi.w	#0xFDFF,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
+	andi.w	#0xFDFF,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 5
 	movea.l	div_buff(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_A ƒAƒhƒŒƒX
 	lea.l	65*8*7(%a0),%a0		|# %a0.l = •\Ž¦—p div_buff_H ƒAƒhƒŒƒX
 	movea.l	#0xEB0008,%a1		|# %a1.l = “]‘—æƒAƒhƒŒƒXiŠï””Ô†ƒXƒvƒ‰ƒCƒgj
 	bsr	SP_TRANS_div		|# ƒ`ƒFƒCƒ““]‘—ŽÀs
 
-	ori.w	#0x0700,sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
+	ori.w	#0x0700,%sr		|# Š„ž‚Ýƒ}ƒXƒNƒŒƒxƒ‹ 7
 	movea.l	#0xe88000,%a0		|# %a0.l = MFP ƒAƒhƒŒƒX
 	move.b	(%a7)+,IMRB(%a0)		|# IMRB •œŠˆ
 	move.b	(%a7)+,IMRA(%a0)		|# IMRA •œŠˆ

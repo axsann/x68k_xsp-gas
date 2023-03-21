@@ -1,11 +1,4 @@
-# この makefile は、msys や cygwin などの Unix 互換環境上で利用することを想定している。
-# ビルドには xdev68k が必要。
-# https://github.com/yosshin4004/xdev68k
-
-# 必要な環境変数が定義されていることを確認する。
-# ifndef XDEV68K_DIR
-# 	$(error ERROR : XDEV68K_DIR is not defined.)
-# endif
+# この makefile はUnix 互換環境上で利用することを想定している。
 
 CROSS = m68k-xelf-
 AS = $(CROSS)as

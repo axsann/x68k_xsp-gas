@@ -126,7 +126,7 @@ CHK_PCM8A:
 
 *-------[ スーパーバイザーモードへ ]
 	suba.l	a1,a1
-	iocs	_B_SUPER		* スーパーバイザーモードへ
+	iocs	__B_SUPER		* スーパーバイザーモードへ
 	move.l	d0,-(sp)		*（もともとスーパーバイザーモードなら d0.l=-1）
 
 
@@ -159,7 +159,7 @@ EXIT_CHK_PCM8A:
 	move.l	(sp)+,d0
 	bmi.b	@F			* スーパーバイザーモードから実行されていたら戻す必要無し
 		movea.l	d0,a1
-		iocs	_B_SUPER	* ユーザーモードへ
+		iocs	__B_SUPER	* ユーザーモードへ
 @@:
 	move.l	d1,d0			* d0.l = 戻値（バージョン*100（10進）。非常駐なら 0）
 	movem.l	(sp)+,d1/a0-a1		* レジスタ復活

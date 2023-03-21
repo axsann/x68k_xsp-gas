@@ -306,16 +306,16 @@ A7ID	=	4+15*4			|#   スタック上 return先アドレス  [ 4 byte ]
 
 #=======[ スーパーバイザーモードへ ]
 	suba.l	%a1,%a1
-	iocs	_B_SUPER		|# スーパーバイザーモードへ
+	iocs	__B_SUPER		|# スーパーバイザーモードへ
 	move.l	%d0,usp_bak		|#（もともとスーパーバイザーモードなら %d0.l=-1）
 
 
 #=======[ XSP 組込み処理 ]
-	ori.w	#$0700,sr		|# 割り込み off
+	ori.w	#0x0700,%sr		|# 割り込み off
 	bsr	WAIT			|# 68030 対策
 
 #-------[ MFP のバックアップを取る ]
-	movea.l	#$e88000,%a0		|# %a0.l = MFPアドレス
+	movea.l	#0xe88000,%a0		|# %a0.l = MFPアドレス
 	lea.l	MFP_bak(%pc),%a1		|# %a1.l = MFP保存先アドレス
 
 	move.b	AER(%a0),AER(%a1)		|#  AER 保存
@@ -324,33 +324,33 @@ A7ID	=	4+15*4			|#   スタック上 return先アドレス  [ 4 byte ]
 	move.b	IMRA(%a0),IMRA(%a1)	|# IMRA 保存
 	move.b	IMRB(%a0),IMRB(%a1)	|# IMRB 保存
 
-	move.l	$118,vector_118_bak	|# 変更前の V-disp ベクタ
-	move.l	$138,vector_138_bak	|# 変更前の CRT-IRQ ベクタ
-	move.w	$E80012,raster_No_bak	|# 変更前の CRT-IRQ ラスタ No.
+	move.l	0x0118,vector_118_bak	|# 変更前の V-disp ベクタ
+	move.l	0x0138,vector_138_bak	|# 変更前の CRT-IRQ ベクタ
+	move.w	0xE80012,raster_No_bak	|# 変更前の CRT-IRQ ラスタ No.
 
 #-------[ V-DISP 割り込み設定 ]
-	move.l	#VSYNC_INT,$118		|# V-disp ベクタ書換え
+	move.l	#VSYNC_INT,0x0118		|# V-disp ベクタ書換え
 	bclr.b	#4,AER(%a0)		|# 帰線期間と同時に割り込む
 	bset.b	#6,IMRB(%a0)		|# マスクをはがす
 	bset.b	#6,IERB(%a0)		|# 割り込み許可
 
 #-------[ H-SYNC 割り込み設定 ]
-	move.w	#1023,$E80012		|# 割り込みラスタナンバー（まだ割り込み off）
-	move.l	#RAS_INT,$138		|# CRT-IRQ ベクタ書換え
+	move.w	#1023,0xE80012		|# 割り込みラスタナンバー（まだ割り込み off）
+	move.l	#RAS_INT,0x0138		|# CRT-IRQ ベクタ書換え
 	bclr.b	#6,AER(%a0)		|# 割り込み要求と同時に割り込む
 	bset.b	#6,IMRA(%a0)		|# マスクをはがす
 	bset.b	#6,IERA(%a0)		|# 割り込み許可
 
 #------------------------------
 	bsr	WAIT			|# 68030 対策
-	andi.w	#$f8ff,sr		|# 割り込み on
+	andi.w	#0xf8ff,%sr		|# 割り込み on
 
 
 #=======[ ユーザーモードへ ]
 	move.l	usp_bak(%pc),%d0
 	bmi.b	0f			|# スーパーバイザーモードから実行されていたら戻す必要無し
 		movea.l	%d0,%a1
-		iocs	_B_SUPER	|# ユーザーモードへ
+		iocs	__B_SUPER	|# ユーザーモードへ
 0:
 
 #-------[ 終了 ]
@@ -383,16 +383,16 @@ A7ID	=	4+15*4			|#   スタック上 return先アドレス  [ 4 byte ]
 
 #=======[ スーパーバイザーモードへ ]
 	suba.l	%a1,%a1
-	iocs	_B_SUPER		|# スーパーバイザーモードへ
+	iocs	__B_SUPER		|# スーパーバイザーモードへ
 	move.l	%d0,usp_bak		|#（もともとスーパーバイザーモードなら %d0.l=-1）
 
 
 #=======[ XSP 組込み解除処理 ]
-	ori.w	#$0700,sr		|# 割り込み off
+	ori.w	#0x0700,%sr		|# 割り込み off
 	bsr	WAIT			|# 68030 対策
 
 #-------[ MFP の復活 ]
-	movea.l	#$e88000,%a0		|# %a0.l = MFPアドレス
+	movea.l	#0xe88000,%a0		|# %a0.l = MFPアドレス
 	lea.l	MFP_bak(%pc),%a1		|# %a1.l = MFPを保存しておいたアドレス
 
 	move.b	AER(%a1),%d0
@@ -420,20 +420,20 @@ A7ID	=	4+15*4			|#   スタック上 return先アドレス  [ 4 byte ]
 	andi.b	#0b10111111,IMRB(%a0)
 	or.b	%d0,IMRB(%a0)		|# IMRB bit6 復活
 
-	move.l	vector_118_bak(%pc),$118		|# V-disp ベクタ復活
-	move.l	vector_138_bak(%pc),$138		|# CRT-IRQ ベクタ復活
-	move.w	raster_No_bak(%pc),$E80012	|# CRT-IRQ ラスタ No. 復活
+	move.l	vector_118_bak(%pc),0x0118		|# V-disp ベクタ復活
+	move.l	vector_138_bak(%pc),0x0138		|# CRT-IRQ ベクタ復活
+	move.w	raster_No_bak(%pc),0xE80012	|# CRT-IRQ ラスタ No. 復活
 
 #------------------------------
 	bsr	WAIT			|# 68030 対策
-	andi.w	#$f8ff,sr		|# 割り込み on
+	andi.w	#0xf8ff,%sr		|# 割り込み on
 
 
 #=======[ ユーザーモードへ ]
 	move.l	usp_bak(%pc),%d0
 	bmi.b	0f			|# スーパーバイザーモードから実行されていたら戻す必要無し
 		movea.l	%d0,%a1
-		iocs	_B_SUPER	|# ユーザーモードへ
+		iocs	__B_SUPER	|# ユーザーモードへ
 0:
 
 #-------[ 終了 ]

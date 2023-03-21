@@ -59,7 +59,7 @@ wait_until_write_struct_is_free:
 
 #=======[ スーパーバイザーモードへ ]
 	suba.l	%a1,%a1
-	iocs	_B_SUPER		|# スーパーバイザーモードへ
+	iocs	__B_SUPER		|# スーパーバイザーモードへ
 	move.l	%d0,usp_bak		|# 元々スーパーバイザーモードなら、%d0.l = -1
 
 
@@ -844,7 +844,7 @@ SP_RAS_SORT_END:
 	move.l	usp_bak(%pc),%d0
 	bmi.b	0f			|# スーパーバイザーモードより実行されていたら戻す必要無し
 		movea.l	%d0,%a1
-		iocs	_B_SUPER	|# ユーザーモードへ
+		iocs	__B_SUPER	|# ユーザーモードへ
 0:
 
 #-------[ 戻り値 ]

@@ -1,6 +1,7 @@
 *.a
-*.x
 *.elf*
 *.sys
 *.bz2
 XSP/download/
+SAMPLE/XSP_010/download/
+SAMPLE/**/*.o
