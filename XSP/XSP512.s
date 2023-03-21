@@ -143,7 +143,7 @@
 SORT_512_LOOP:
 	move.l	(%a0)+,%d0			|#[12]	%d0.l = x,y
 	move.w	%d0,%d1				|#[ 4]	%d1.w = y
-	and.w	%d2,%d1				|#[ 4]	%d1.w = y & $1FC
+	and.w	%d2,%d1				|#[ 4]	%d1.w = y & 0x01FC
 	movea.l	SORT_512_JPTBL(%pc,%d1.w),%a2	|#[18]	%a2.l = ブランチ先アドレス
 	jmp	(%a2)				|#[ 8]	ブランチ
 
