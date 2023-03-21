@@ -9,7 +9,7 @@ LD = $(CROSS)gcc
 TARGET = main.x
 
 # ヘッダ検索パス
-INCLUDE_FLAGS = -I./download/m68k-xelf/m68k-elf/include
+INCLUDE_FLAGS = -I../../download/m68k-xelf/m68k-elf/include
 
 # コンパイルフラグ
 COMMON_FLAGS = -m68000 -O2 $(INCLUDE_FLAGS)
@@ -18,23 +18,18 @@ CFLAGS = $(COMMON_FLAGS)
 # *.c ソースファイル
 C_SRCS = main.c
 
-# リンク対象のライブラリファイル
 LDFLAGS =
 
-LIB =  ../../XSP/XSP2lib.o
+LIBS =  ../../XSP/XSP2lib.o
 
 # デフォルトのターゲット
 all : $(TARGET)
 
 $(TARGET): main.o
-	$(LD) $(LDFLAGS) -o $@ $^ $(LIB)
+	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
 clean:
 	-rm -f *.o *.elf* $(TARGET)
-
-.PHONY: download
-download:
-	../../scripts/download.sh
