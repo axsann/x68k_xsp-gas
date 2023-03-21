@@ -348,31 +348,31 @@ SORT_512b_PRchange:
 						|# PR_PROTECT	 buff_0_protect,\buff_1_protect
 	move.w	(%a1)+,%d0			|# %d0.w = buff_A_total
 	move.w	(%a1)+,%d1			|# %d1.w = buff_B_total
-	PR_PROTECT	00(%a0),02(%a0)
+	PR_PROTECT	%a0@(0),%a0@(2)
 
 	move.w	(%a1)+,%d0			|# %d0.w = buff_C_total
 						|# %d1.w = buff_B_total
-	PR_PROTECT	04(%a0),02(%a0)
+	PR_PROTECT	%a0@(4),%a0@(2)
 
 						|# %d0.w = buff_C_total
 	move.w	(%a1)+,%d1			|# %d1.w = buff_D_total
-	PR_PROTECT	04(%a0),06(%a0)
+	PR_PROTECT	%a0@(4),%a0@(6)
 
 	move.w	(%a1)+,%d0			|# %d0.w = buff_E_total
 						|# %d1.w = buff_D_total
-	PR_PROTECT	08(%a0),06(%a0)
+	PR_PROTECT	%a0@(8),%a0@(6)
 
 						|# %d0.w = buff_E_total
 	move.w	(%a1)+,%d1			|# %d1.w = buff_F_total
-	PR_PROTECT	08(%a0),10(%a0)
+	PR_PROTECT	%a0@(8),%a0@(10)
 
 	move.w	(%a1)+,%d0			|# %d0.w = buff_G_total
 						|# %d1.w = buff_F_total
-	PR_PROTECT	12(%a0),10(%a0)
+	PR_PROTECT	%a0@(12),%a0@(10)
 
 						|# %d0.w = buff_G_total
 	move.w	(%a1)+,%d1			|# %d1.w = buff_H_total
-	PR_PROTECT	12(%a0),14(%a0)
+	PR_PROTECT	%a0@(12),%a0@(14)
 
 
 
