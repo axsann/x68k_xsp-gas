@@ -26,9 +26,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <doslib.h>
-#include <iocslib.h>
+#include <x68k/dos.h>
+#include <x68k/iocs.h>
 #include "../../XSP/XSP2lib.H"
+
+/* TODO: スプライトの表示が確認できないので要修正 */
 
 /* スプライト PCG パターン最大使用数 */
 #define		PCG_MAX		2048
@@ -56,6 +58,22 @@ XOBJ_FRM_DAT	frm_dat[FRM_MAX];
 XOBJ_REF_DAT	ref_dat[REF_MAX];
 
 
+void set_extension(char *buffer, const char *filename, const char *extension) {
+    // 拡張子なしのファイル名をバッファにコピー
+    strcpy(buffer, filename);
+
+    // ファイル名のドットを見つける
+    char *dot = strrchr(buffer, '.');
+    if (dot != NULL) {
+        *dot = '\0';
+    }
+
+    // 新しい拡張子を追加
+    strcat(buffer, ".");
+    strcat(buffer, extension);
+}
+
+
 /*-------------------------------------[ MAIN ]---------------------------------------*/
 void main(int argc, unsigned char* argv[])
 {
@@ -75,40 +93,39 @@ void main(int argc, unsigned char* argv[])
 
 	if (argc <= 1) {
 		/* ヘルプを表示して終了 */
-		printf("使用法：main.X [形状データファイル名（拡張子省略）]\n");
+		printf("使用法：main.x [形状データファイル名（拡張子省略）]\n");
 		exit(0);
 	} else {
 		char	str_tmp[256];
 
 		/* ファイル読み込み */
-		strmfe(str_tmp, argv[1], "xsp");		/* 拡張子置換 */
+		set_extension(str_tmp, argv[1], "xsp");		/* 拡張子置換 */
 		fp = fopen(str_tmp, "rb");
 		if (fp == NULL) {
-			CRTMOD(0x10);
+			_iocs_crtmod(0x10);
 			printf("%s が open できません。\n", str_tmp);
 			exit(1);
 		}
 		fread(pcg_dat, sizeof(char), 128 * PCG_MAX, fp);
 
-		strmfe(str_tmp, argv[1], "frm");		/* 拡張子置換 */
+		set_extension(str_tmp, argv[1], "frm");		/* 拡張子置換 */
 		fp = fopen(str_tmp, "rb");
 		if (fp == NULL) {
-			CRTMOD(0x10);
+			_iocs_crtmod(0x10);
 			printf("%s が open できません。\n", str_tmp);
 			exit(1);
 		}
 		fread(frm_dat, sizeof(XOBJ_FRM_DAT), FRM_MAX, fp);
 
-		strmfe(str_tmp, argv[1], "ref");		/* 拡張子置換 */
+		set_extension(str_tmp, argv[1], "ref");		/* 拡張子置換 */
 		fp = fopen(str_tmp, "rb");
 		if (fp == NULL) {
-			CRTMOD(0x10);
+			_iocs_crtmod(0x10);
 			printf("%s が open できません。\n", str_tmp);
 			exit(1);
 		}
 		sizeof_ref = fread(ref_dat, sizeof(XOBJ_REF_DAT), REF_MAX, fp);
-
-		fcloseall();
+		fclose(fp);
 
 		/* REF_DAT[].ptr 補正 */
 		for (i = 0; i < sizeof_ref; i++) {
@@ -120,16 +137,16 @@ void main(int argc, unsigned char* argv[])
 	/*---------------------[ 画面を初期化 ]---------------------*/
 
 	/* 256x256 dot 16 色グラフィックプレーン 4 枚 31KHz */
-	CRTMOD(6);
+	_iocs_crtmod(6);
 
 	/* スプライト表示を ON */
-	SP_ON();
+	_iocs_sp_on();
 
 	/* BG0 表示 OFF */
-	BGCTRLST(0, 0, 0);
+	_iocs_bgctrlst(0, 0, 0);
 
 	/* BG1 表示 OFF */
-	BGCTRLST(1, 1, 0);
+	_iocs_bgctrlst(1, 1, 0);
 
 	/* 簡易説明 */
 	printf(
@@ -139,19 +156,19 @@ void main(int argc, unsigned char* argv[])
 	);
 
 	/* カーソル表示 OFF */
-	B_CUROFF();
+	_iocs_b_curoff();
 
 
 	/*---------------------[ XSP を初期化 ]---------------------*/
 
 	/* XSP の初期化 */
-	xsp_on();
+	_xsp_on();
 
 	/* PCG データと PCG 配置管理をテーブルを指定 */
-	xsp_pcgdat_set(pcg_dat, pcg_alt, sizeof(pcg_alt));
+	_xsp_pcgdat_set(pcg_dat, pcg_alt, sizeof(pcg_alt));
 
 	/* 複合スプライト形状データを指定 */
-	xsp_objdat_set(ref_dat);
+	_xsp_objdat_set(ref_dat);
 
 
 	/*==========================[ スティックで操作するデモ ]============================*/
@@ -164,17 +181,17 @@ void main(int argc, unsigned char* argv[])
 
 
 	/* 何かキーを押すまでループ */
-	while (INPOUT(0xFF) == 0) {
+	while (_dos_inpout(0xFF) == 0) {
 		static int	pre_stk = 0;
 		static int	stk = 0;
 		static int	timer = 0;
 
 		/* 垂直同期 */
-		xsp_vsync2(1);
+		_xsp_vsync2(1);
 
 		/* スティックの入力に合せて移動 */
 		pre_stk = stk;		/* 前回のスティックの内容 */
-		stk = JOYGET(0);	/* 今回のスティックの内容 */
+		stk = _iocs_joyget(0);	/* 今回のスティックの内容 */
 		if ((stk & 1) == 0) player.y -= 1;		/* 上に移動 */
 		if ((stk & 2) == 0) player.y += 1;		/* 下に移動 */
 		if ((stk & 4) == 0) player.x -= 1;		/* 左に移動 */
@@ -203,12 +220,12 @@ void main(int argc, unsigned char* argv[])
 		}
 
 		/* pt info を画面に表示 */
-		B_LOCATE(0, 5);
+		_iocs_b_locate(0, 5);
 		printf("  pt = %3X \n", player.pt);
 		printf("info = %3X \n", player.info);
 
 		/* スプライトの表示登録 */
-		xobj_set(player.x, player.y, player.pt, player.info);
+		_xobj_set(player.x, player.y, player.pt, player.info);
 		/*
 			↑ここは、
 			xobj_set_st(&player);
@@ -216,17 +233,17 @@ void main(int argc, unsigned char* argv[])
 		*/
 
 		/* スプライトを一括表示する */
-		xsp_out();
+		_xsp_out();
 	}
 
 
 	/*-----------------------[ 終了処理 ]-----------------------*/
 
 	/* XSP の終了処理 */
-	xsp_off();
+	_xsp_off();
 
 	/* 画面モードを戻す */
-	CRTMOD(0x10);
+	_iocs_crtmod(0x10);
 }
 
 
